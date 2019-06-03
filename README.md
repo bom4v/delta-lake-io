@@ -216,8 +216,24 @@ $ ls -laFh ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/jars/del
 $ mkdir -p /tmp/delta-lake && rm -rf /tmp/delta-lake/table.dlk
 ```
 
+* The `DeltaLakeStorer` class takes two parameters:
+  + A CSV input data file, by default
+    [`data/cdr_example.csv`](https://github.com/bom4v/delta-lake-io/blob/master/data/cdr_example.csv).
+	Spark reads that CSV data file, fills a
+	[Spark DataFrame](https://spark.apache.org/docs/latest/sql-programming-guide.html)
+	and stores the result into the Delta Lake
+  + The file-path of the Delta Lake for those data, by default
+    `/tmp/delta-lake/table.dlk`. Note that the `.dlk` extension is needed
+	when passing that file-path as a command-line parameter, as it so far
+	corresponds to the way that class parses the command-line to retrieve
+	that parameter.
+  + If called without parameters, the default values, as specified above,
+    are used
+
 * Launch the storing job in the SBT JVM:
 ```bash
+$ ls -lFh data/cdr_example.csv
+-rw-r--r--  1 user  staff  26K Jun  3 19:08 data/cdr_example.csv
 $ sbt "runMain org.bom4v.ti.DeltaLakeStorer"
 [info] Loading settings for project global-plugins from gpg.sbt ...
 [info] Loading global plugins from ~/.sbt/1.0/plugins
@@ -266,12 +282,29 @@ Scala: version 2.12.8
   + In Yarn cluster client mode with the standalone version (that method
     is basically the same as above):
 ```bash
-$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeTutorial target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeStorer target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
 ...
 Spark: 2.4.3
 Scala: version 2.12.8
 ...
 ```
+
+* The `DeltaLakeRetriever` class takes two parameters:
+  + The file-path of the Delta Lake for the data to be retrieved, by default
+    `/tmp/delta-lake/table.dlk`. Note that the `.dlk` extension is needed
+	when passing that file-path as a command-line parameter, as it so far
+	corresponds to the way that class parses the command-line to retrieve
+	that parameter.
+  + A CSV output data file, by default `data-extract.csv`. Note that this
+    parameter is so far ignored. Indeed, Spark creates a full directory,
+    `delta-extract-tmp` here (hard-coded in the class), containing CSV
+	chunk files, which all together	represent the retrieved data
+	from the Delta Lake.
+	Those CSV chunk files may be re-assembled by a script, for instance
+    [`tools/lakeRetrieve.sh`](https://github.com/bom4v/delta-lake-io/blob/master/tools/lakeRetrieve.sh)
+	(not fully working yet).
+  + If called without parameters, the default values, as specified above,
+    are used
 
 * Launch the retrieval job in the SBT JVM, generating chunk CSV files
   in the `delta-extract-tmp` directory:
@@ -300,6 +333,33 @@ $ wc -l delta-extract-tmp/part-00000-xxx-c000.csv data/cdr_example.csv
      156 data/cdr_example.csv
      313 total
 $ rm -rf delta-extract-tmp
+```
+
+* Launch the job with `spark-submit`
+  + In local mode (for instance, on a laptop; that mode may not always work
+    on the Spark/Hadoop clusters):
+```bash
+$ mkdir -p /tmp/delta-lake && rm -rf /tmp/delta-lake/table.dlk
+$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --master local --class org.bom4v.ti.DeltaLakeRetriever target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+2019-06-03 20:22:46 INFO  SparkContext:54 - Running Spark version 2.4.3
+2019-06-03 20:22:46 INFO  SparkContext:54 - Submitted application: StandaloneQuerylauncher
+...
+Spark: 2.4.3
+Scala: version 2.12.8
+...
+2019-06-03 20:22:47 INFO  SparkContext:54 - Successfully stopped SparkContext
+2019-06-03 20:22:47 INFO  ShutdownHookManager:54 - Shutdown hook called
+...
+```
+
+  + In Yarn cluster client mode with the standalone version (that method
+    is basically the same as above):
+```bash
+$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeRetriever target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+...
+Spark: 2.4.3
+Scala: version 2.12.8
+...
 ```
 
 * Playing with Python on PySpark:
