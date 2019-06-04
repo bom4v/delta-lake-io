@@ -34,9 +34,9 @@ developers := List(
 
 //useGpg := true
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.11.12"
 
-crossScalaVersions := Seq("2.12.7", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.8")
 
 checksums in update := Nil
 

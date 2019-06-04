@@ -18,7 +18,7 @@ tools (_e.g._, `spark-submit`, `spark-shell`, `spark-sql`, `beeline`,
 [PySpark](https://spark.apache.org/docs/latest/api/python/pyspark.html).
 PySpark is a Python wrapper around Spark libraries, run through
 a Java Virtual Machine (JVM) handily provided by
-[OpenJDK](https://openjdk.java.net/).
+[OpenJDK](https://openjdk.java.net).
 
 To guarantee full reproducibility with the Python stack, `pyenv`
 and `pipenv` are used here.
@@ -34,7 +34,11 @@ for more details. Basically:
   [GitHub](https://github.com/pyenv/pyenv.git)
 * Specific versions of Python (namely, at the time of writing, 2.7.15
   and 3.7.2) are installed in the user account file-system.
-  Those specific Python frameworks provide the `pip` package management tool
+  Those specific Python frameworks provide the `pip` package management tool.
+  often, the version of `pip` coming with the Python framework is outdated
+  and needs to be upgraded; the `-U` option in the `pip install` command
+  line is intended to install (if not already installed) or upgrade
+  (if an older version is already present)
 * The Python `pipenv` package is installed thanks to `pip`
 * The `.python_version`, `Pipfile` and `Pipfile.lock` files, specific
   per project folder, fully drive the versions of all the Python packages
@@ -46,6 +50,23 @@ for more details. Basically:
 $ mkdir -p ~/dev/infra && cd ~/dev/infra
 $ git clone https://github.com/bom4v/delta-lake-io.git
 $ cd ~/dev/infra/delta-lake-io
+```
+
+## Utilities to analyze JSON content
+
+### Debian/Ubuntu
+```bash
+$ sudo aptitude -y install jq
+```
+
+### Fedora/CentOS/RedHat
+```bash
+$ sudo dnf -y install jq
+```
+
+### MacOS
+```bash
+$ brew install jq
 ```
 
 ## Java
@@ -71,6 +92,23 @@ $ export JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk"
 ```bash
 $ export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 $ brew install maven
+```
+
+## Utilities to analyze Parquet files
+
+### Debian/Ubuntu
+```bash
+$ sudo aptitude -y install parquet-tools
+```
+
+### Fedora/CentOS/RedHat
+```bash
+$ sudo dnf -y install parquet-tools
+```
+
+### MacOS
+```bash
+$ brew install parquet-tools
 ```
 
 ## SBT
@@ -127,12 +165,12 @@ Alternatively, run a command inside the virtualenv with pipenv run.
 * Download the application JAR artefact from a
   [Maven repository](https://repo1.maven.org/maven2/):
 ```bash
-$ wget https://oss.sonatype.org/content/groups/public/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ wget https://oss.sonatype.org/content/groups/public/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4.jar
 ```
 
 * Launch the JAR application:
 ```bash
-$ spark-submit --packages io.delta:delta-core_2.12:0.1.0 --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeTutorial delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ spark-submit --packages io.delta:delta-core_2.11:0.1.0 --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeTutorial delta-lake-io_2.11-0.0.1-spark2.4.jar
 ```
 
 # Contribute to that project
@@ -155,37 +193,37 @@ $ sbt 'set isSnapshot := true' compile package publishM2 publishLocal
 [info] Set current project to delta-lake-io (in build file:~/dev/infra/delta-lake-io/)
 [success] Total time: 1 s, completed Apr 25, 2019 6:59:10 PM
 [success] Total time: 0 s, completed Apr 25, 2019 6:59:10 PM
-[info] Packaging ~/dev/infra/delta-lake-io/target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4-sources.jar ...
+[info] Packaging ~/dev/infra/delta-lake-io/target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4-sources.jar ...
 [info] Done packaging.
-[info] Wrote ~/dev/infra/delta-lake-io/target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.pom
-[info] Main Scala API documentation to ~/dev/infra/delta-lake-io/target/scala-2.12/api...
+[info] Wrote ~/dev/infra/delta-lake-io/target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.pom
+[info] Main Scala API documentation to ~/dev/infra/delta-lake-io/target/scala-2.11/api...
 model contains 5 documentable templates
 [info] Main Scala API documentation successful.
-[info] Packaging ~/dev/infra/delta-lake-io/target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4-javadoc.jar ...
+[info] Packaging ~/dev/infra/delta-lake-io/target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4-javadoc.jar ...
 [info] Done packaging.
-[info] 	published delta-lake-io_2.12 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4.pom
-[info] 	published delta-lake-io_2.12 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4.jar
-[info] 	published delta-lake-io_2.12 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4-sources.jar
-[info] 	published delta-lake-io_2.12 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4-javadoc.jar
+[info] 	published delta-lake-io_2.11 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4.pom
+[info] 	published delta-lake-io_2.11 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4.jar
+[info] 	published delta-lake-io_2.11 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4-sources.jar
+[info] 	published delta-lake-io_2.11 to file:~/.m2/repository/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4-javadoc.jar
 [success] Total time: 3 s, completed Apr 25, 2019 6:59:13 PM
-[info] Wrote ~/dev/infra/delta-lake-io/target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.pom
-[info] Main Scala API documentation to ~/dev/infra/delta-lake-io/target/scala-2.12/api...
+[info] Wrote ~/dev/infra/delta-lake-io/target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.pom
+[info] Main Scala API documentation to ~/dev/infra/delta-lake-io/target/scala-2.11/api...
 model contains 5 documentable templates
 [info] Main Scala API documentation successful.
-[info] Packaging ~/dev/infra/delta-lake-io/target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4-javadoc.jar ...
+[info] Packaging ~/dev/infra/delta-lake-io/target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4-javadoc.jar ...
 [info] Done packaging.
-[info] :: delivering :: org.bom4v.ti#delta-lake-io_2.12;0.0.1-spark2.4 :: 0.0.1-spark2.4 :: integration :: Thu Apr 25 18:59:15 EEST 2019
-[info] 	delivering ivy file to ~/dev/infra/delta-lake-io/target/scala-2.12/ivy-0.0.1-spark2.4.xml
-[info] 	published delta-lake-io_2.12 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/poms/delta-lake-io_2.12.pom
-[info] 	published delta-lake-io_2.12 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/jars/delta-lake-io_2.12.jar
-[info] 	published delta-lake-io_2.12 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/srcs/delta-lake-io_2.12-sources.jar
-[info] 	published delta-lake-io_2.12 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/docs/delta-lake-io_2.12-javadoc.jar
-[info] 	published ivy to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/ivys/ivy.xml
+[info] :: delivering :: org.bom4v.ti#delta-lake-io_2.11;0.0.1-spark2.4 :: 0.0.1-spark2.4 :: integration :: Thu Apr 25 18:59:15 EEST 2019
+[info] 	delivering ivy file to ~/dev/infra/delta-lake-io/target/scala-2.11/ivy-0.0.1-spark2.4.xml
+[info] 	published delta-lake-io_2.11 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/poms/delta-lake-io_2.11.pom
+[info] 	published delta-lake-io_2.11 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/jars/delta-lake-io_2.11.jar
+[info] 	published delta-lake-io_2.11 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/srcs/delta-lake-io_2.11-sources.jar
+[info] 	published delta-lake-io_2.11 to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/docs/delta-lake-io_2.11-javadoc.jar
+[info] 	published ivy to ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/ivys/ivy.xml
 [success] Total time: 1 s, completed Apr 25, 2019 6:59:15 PM
 ```
 
 * The above command generates JAR artefacts (mainly
-  `delta-lake-io_2.12-0.0.1-spark2.4.jar`) locally in the project
+  `delta-lake-io_2.11-0.0.1-spark2.4.jar`) locally in the project
   `target` directory, as well as in the Maven and Ivy2 user repositories
   (`~/.m2` and `~/.ivy2` respectively).
 
@@ -195,20 +233,20 @@ model contains 5 documentable templates
 * Check that the artefacts have been produced
   + Locally (`package` command):
 ```bash
-$ ls -laFh target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
--rw-r--r-- 1 user group 26K Jun 3 12:16 target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ ls -laFh target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.jar
+-rw-r--r-- 1 user group 26K Jun 3 12:16 target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.jar
 ```
 
   + In the local Maven repository (`publishM2` task):
 ```bash
-$ ls -laFh ~/.m2/repository/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4.jar
--rw-r--r-- 1 user group 26K Jun 3 12:16 ~/.m2/repository/org/bom4v/ti/delta-lake-io_2.12/0.0.1-spark2.4/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ ls -laFh ~/.m2/repository/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4.jar
+-rw-r--r-- 1 user group 26K Jun 3 12:16 ~/.m2/repository/org/bom4v/ti/delta-lake-io_2.11/0.0.1-spark2.4/delta-lake-io_2.11-0.0.1-spark2.4.jar
 ```
 
   + In the local Ivy2 repository (`publishLocal` task):
 ```bash
-$ ls -laFh ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/jars/delta-lake-io_2.12.jar
--rw-r--r-- 1 user group 26K Jun 3 12:16 ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.12/0.0.1-spark2.4/jars/delta-lake-io_2.12.jar
+$ ls -laFh ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/jars/delta-lake-io_2.11.jar
+-rw-r--r-- 1 user group 26K Jun 3 12:16 ~/.ivy2/local/org.bom4v.ti/delta-lake-io_2.11/0.0.1-spark2.4/jars/delta-lake-io_2.11.jar
 ```
 
 * Clean any previous data:
@@ -244,7 +282,7 @@ $ sbt "runMain org.bom4v.ti.DeltaLakeStorer"
 [warn] Multiple main classes detected.  Run 'show discoveredMainClasses' to see the list
 [info] Running org.bom4v.ti.DeltaLakeStorer 
 Spark: 2.4.3
-Scala: version 2.12.8
+Scala: version 2.11.12
 File-path for the CSV data file: data/cdr_example.csv
 File-path for the Delta Lake table/data-frame: /tmp/delta-lake/table.dlk
 ...
@@ -267,12 +305,12 @@ drwxr-xr-x  4 yser  group   128B Jun  3 19:16 _delta_log/
     on the Spark/Hadoop clusters):
 ```bash
 $ mkdir -p /tmp/delta-lake && rm -rf /tmp/delta-lake/table.dlk
-$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --master local --class org.bom4v.ti.DeltaLakeStorer target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ pipenv run spark-submit --packages io.delta:delta-core_2.11:0.1.0 --master local --class org.bom4v.ti.DeltaLakeStorer target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.jar
 2019-06-03 20:22:46 INFO  SparkContext:54 - Running Spark version 2.4.3
 2019-06-03 20:22:46 INFO  SparkContext:54 - Submitted application: StandaloneQuerylauncher
 ...
 Spark: 2.4.3
-Scala: version 2.12.8
+Scala: version 2.11.12
 ...
 2019-06-03 20:22:47 INFO  SparkContext:54 - Successfully stopped SparkContext
 2019-06-03 20:22:47 INFO  ShutdownHookManager:54 - Shutdown hook called
@@ -282,10 +320,10 @@ Scala: version 2.12.8
   + In Yarn cluster client mode with the standalone version (that method
     is basically the same as above):
 ```bash
-$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeStorer target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ pipenv run spark-submit --packages io.delta:delta-core_2.11:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeStorer target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.jar
 ...
 Spark: 2.4.3
-Scala: version 2.12.8
+Scala: version 2.11.12
 ...
 ```
 
@@ -319,7 +357,7 @@ $ sbt "runMain org.bom4v.ti.DeltaLakeRetriever"
 [warn] Multiple main classes detected.  Run 'show discoveredMainClasses' to see the list
 [info] Running org.bom4v.ti.DeltaLakeRetriever 
 Spark: 2.4.3
-Scala: version 2.12.8
+Scala: version 2.11.12
 File-path for the Delta Lake table/data-frame: /tmp/delta-lake/table.dlk
 File-path for the expected CSV file: delta-extract.csv
 [success] Total time: 27 s, completed Jun 3, 2019 7:28:53 PM
@@ -340,12 +378,12 @@ $ rm -rf delta-extract-tmp
     on the Spark/Hadoop clusters):
 ```bash
 $ mkdir -p /tmp/delta-lake && rm -rf /tmp/delta-lake/table.dlk
-$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --master local --class org.bom4v.ti.DeltaLakeRetriever target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ pipenv run spark-submit --packages io.delta:delta-core_2.11:0.1.0 --master local --class org.bom4v.ti.DeltaLakeRetriever target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.jar
 2019-06-03 20:22:46 INFO  SparkContext:54 - Running Spark version 2.4.3
 2019-06-03 20:22:46 INFO  SparkContext:54 - Submitted application: StandaloneQuerylauncher
 ...
 Spark: 2.4.3
-Scala: version 2.12.8
+Scala: version 2.11.12
 ...
 2019-06-03 20:22:47 INFO  SparkContext:54 - Successfully stopped SparkContext
 2019-06-03 20:22:47 INFO  ShutdownHookManager:54 - Shutdown hook called
@@ -355,29 +393,29 @@ Scala: version 2.12.8
   + In Yarn cluster client mode with the standalone version (that method
     is basically the same as above):
 ```bash
-$ pipenv run spark-submit --packages io.delta:delta-core_2.12:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeRetriever target/scala-2.12/delta-lake-io_2.12-0.0.1-spark2.4.jar
+$ pipenv run spark-submit --packages io.delta:delta-core_2.11:0.1.0 --num-executors 1 --executor-memory 512m --master yarn --deploy-mode client --class org.bom4v.ti.DeltaLakeRetriever target/scala-2.11/delta-lake-io_2.11-0.0.1-spark2.4.jar
 ...
 Spark: 2.4.3
-Scala: version 2.12.8
+Scala: version 2.11.12
 ...
 ```
 
 * Playing with Python on PySpark:
 ```bash
-$ pipenv run pyspark --packages io.delta:delta-core_2.12:0.1.0
+$ pipenv run pyspark --packages io.delta:delta-core_2.11:0.1.0
 Python 3.7.3 (default, Mar 27 2019, 09:23:15) 
 [Clang 10.0.1 (clang-1001.0.46.3)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 Ivy Default Cache set to: ~/.ivy2/cache
 The jars for the packages stored in: ~/.ivy2/jars
 :: loading settings :: url = jar:file:~/.local/share/virtualenvs/delta-lake-io-x9Z2QpTc/lib/python3.7/site-packages/pyspark/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
-io.delta#delta-core_2.12 added as a dependency
+io.delta#delta-core_2.11 added as a dependency
 :: resolving dependencies :: org.apache.spark#spark-submit-parent-29330cf6-fe6e-49c1-95c1-a988cbf2b4af;1.0
 	confs: [default]
-	found io.delta#delta-core_2.12;0.1.0 in spark-list
+	found io.delta#delta-core_2.11;0.1.0 in spark-list
 :: resolution report :: resolve 171ms :: artifacts dl 3ms
 	:: modules in use:
-	io.delta#delta-core_2.12;0.1.0 from spark-list in [default]
+	io.delta#delta-core_2.11;0.1.0 from spark-list in [default]
 	---------------------------------------------------------------------
 	|                  |            modules            ||   artifacts   |
 	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
@@ -394,7 +432,7 @@ Welcome to
       ____              __
      / __/__  ___ _____/ /__
     _\ \/ _ \/ _ `/ __/  '_/
-   /__ / .__/\_,_/_/ /_/\_\   version 2.4.2
+   /__ / .__/\_,_/_/ /_/\_\   version 2.4.3
       /_/
 
 Using Python version 3.7.3 (default, Mar 27 2019 09:23:15)
